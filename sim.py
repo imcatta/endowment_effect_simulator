@@ -23,7 +23,7 @@ class Sim:
             raise ValueError(
                 'The value of `distribution` must be `uniform` or `triangular`')
 
-    def _utility_func(self, x):
+    def _value_func(self, x):
         return x if x >= 0 else self.alpha * x
 
     def run(self):
@@ -31,7 +31,7 @@ class Sim:
         bids = []
         for value, mug in zip(self.prior_values, self.mugs):
             sign = 1 if mug else -1
-            utility = self._utility_func(sign * value)
+            utility = self._value_func(sign * value)
             if mug:
                 asks.append(-utility)
             else:
