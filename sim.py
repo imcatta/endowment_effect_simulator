@@ -7,18 +7,18 @@ class Sim:
     def __init__(self, alpha=2, m=44, k=22, value_dist={'distribution': 'uniform'}):
         self.n_swaps = None
         self.alpha = alpha
-        self._init_prior_values(m, value_dist)
+        self._init_priori_values(m, value_dist)
         ones = [1 for _ in range(k)]
         zeros = [0 for _ in range(m - k)]
         self.mugs = random.sample(ones + zeros, m)
         
 
-    def _init_prior_values(self, m, value_dist):
+    def _init_priori_values(self, m, value_dist):
         if value_dist['distribution'] == 'uniform':
-            self.prior_values = [random.uniform(0, 1) for _ in range(m)]
+            self.priori_values = [random.uniform(0, 1) for _ in range(m)]
         elif value_dist['distribution'] == 'triangular':
             c = value_dist['c']
-            self.prior_values = [random.triangular(0, 1, c) for _ in range(m)]
+            self.priori_values = [random.triangular(0, 1, c) for _ in range(m)]
         else:
             raise ValueError(
                 'The value of `distribution` must be `uniform` or `triangular`')
@@ -29,7 +29,7 @@ class Sim:
     def run(self):
         asks = []
         bids = []
-        for value, mug in zip(self.prior_values, self.mugs):
+        for value, mug in zip(self.priori_values, self.mugs):
             sign = 1 if mug else -1
             utility = self._value_func(sign * value)
             if mug:
